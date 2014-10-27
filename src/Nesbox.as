@@ -101,7 +101,7 @@ package
 			createContextMenu();
 			
 			if (gameData.action == GameData.Own 
-				&& gameData.url == null)
+				&& gameData.url == null && (gameData.data == null || gameData.data.length == 0))
 			{
 				initOwnRomMode();
 			}

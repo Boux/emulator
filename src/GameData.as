@@ -47,14 +47,33 @@ package
 
 		public function loadParams(parameters:Object):void
 		{
-			this.system = parameters['system'];
-			this.game = parameters['game'];
-			this.rom = parameters['rom'];
-			this.url = parameters['url'];
-			this.locale = parameters['locale'] || 'en';
-			this.action = parameters['action'] || Own;
+			var self:GameData = this;
 			
-			this.module = this.system + '.swf';
+			self.system = parameters['system'];
+			self.game = parameters['game'];
+			self.rom = parameters['rom'];
+			self.url = parameters['url'];
+			self.locale = parameters['locale'] || 'en';
+			self.action = parameters['action'] || Own;
+			
+			if (parameters['bytes'] == 'true')
+			{
+				self.data = new ByteArray();
+				var count:int = parseInt(parameters['bytes_chunk_count']);
+				for (var i:int = 0; i < count; i++) 
+				{
+					var chunk:String = parameters['bytes_' + i];
+					var chunkArr:Array = chunk.split(',');
+					for (var j:int = 0; j < chunkArr.length; j++) 
+					{
+						var val:int = parseInt(chunkArr[j]);
+						self.data.writeByte(val);
+					}
+				}
+				self.data.position = 0;
+			}
+			
+			self.module = self.system + '.swf';
 		}
 		
 		private function parseLocale(json:String):void
